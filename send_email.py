@@ -1,9 +1,9 @@
-#!/usr/bin/env python 
-# -*- coding: utf-8 -*- 
-# @Time : 2019/7/30 14:55 
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time : 2019/7/30 14:55
 # @Author : mingyang.liang
-# @Site :  
-# @File : send_email.py 
+# @Site :
+# @File : send_email.py
 # @Software: PyCharm
 # coding:utf-8
 import os
@@ -36,7 +36,8 @@ def zipDir(dirpath, outFullName):
 def send_email_annex(open_annex_name, email_annex_name, annex_title):
     """ 发送附件 """
 
-    zipDir('./log', 'logs.zip')
+    zipDir('./Data', 'Data.zip')
+    exit()
     # 创建一个带附件的实例
     msg = MIMEMultipart()
 
@@ -82,4 +83,4 @@ if __name__ == '__main__':
     # open_annex_name 打开文件的名称
     # email_annex_name 发送附件的名称
     # annex_title 附件的标题
-    send_email_annex('../Data.zip', 'data.zip', '测试标题')
+    send_email_annex('./Data.zip', 'data.zip', '测试标题')
