@@ -36,13 +36,12 @@ def zipDir(dirpath, outFullName):
 def send_email_annex(open_annex_name, email_annex_name, annex_title):
     """ 发送附件 """
 
-    zipDir('./Data', 'Data.zip')
-    exit()
+    zipDir(open_annex_name, email_annex_name)
     # 创建一个带附件的实例
     msg = MIMEMultipart()
 
     # 构造附件2
-    att2 = MIMEText(open(open_annex_name, 'rb').read(), 'base64', 'gb2312')
+    att2 = MIMEText(open(email_annex_name, 'rb').read(), 'base64', 'gb2312')
     att2["Content-Type"] = 'application/octet-stream'
     att2["Content-Disposition"] = 'attachment; filename="{}"'.format(email_annex_name)
     msg.attach(att2)
@@ -70,9 +69,9 @@ def send_email_annex(open_annex_name, email_annex_name, annex_title):
     except Exception as e:
         print(e)
         print("附件发送失败")
-    if os.path.exists('./logs.zip'):  # 如果文件存在
+    if os.path.exists('./Data.zip'):  # 如果文件存在
         # 删除文件，可使用以下两种方法。
-        os.remove('./logs.zip')
+        os.remove('./Data.zip')
         print('文件夹已经删除')
         # os.unlink(path)
     else:
@@ -83,4 +82,4 @@ if __name__ == '__main__':
     # open_annex_name 打开文件的名称
     # email_annex_name 发送附件的名称
     # annex_title 附件的标题
-    send_email_annex('./Data.zip', 'data.zip', '测试标题')
+    send_email_annex('./Data', './Data.zip', '测试标题')

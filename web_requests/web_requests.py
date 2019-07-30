@@ -32,7 +32,7 @@ class WebRequests(object):
                 res = self.session.request(method_name, url, **kwargs)
                 # print(res.status_code, '---')
                 if res.status_code == requests.codes.ok:
-                    logger.info('*' * 20 + '请求成功: status_code: %s' % res.status_code + '*' * 20)
+                    # logger.info('*' * 20 + '请求成功: status_code: %s' % res.status_code + '*' * 20)
                     break
                 else:
                     raise requests.RequestException
