@@ -7,6 +7,7 @@
 # @Software: PyCharm
 import json
 import csv
+import os
 from datetime import datetime
 
 from web_requests.web_requests import WebRequests
@@ -52,11 +53,12 @@ class KoGi(object):
             data = dict_data['data']
             item['goods_id'] = data.get('id')
             item['user_id'] = data.get('userId')
-            # item['user_name'] = data.get('userName')
-            item['user_name'] = 0
-            # item['goods_name'] = data.get('describe')
-            item['goods_name'] = 0
-            item['brand_name'] = data.get('brandName')
+            user_name = data.get('userName')
+            item['user_name'] = user_name
+            goods_name = data.get('describe')
+            item['goods_name'] = goods_name
+            brand_name = data.get('brandName')
+            item['brand_name'] = brand_name
             item['goods_price'] = data.get('price')
             item['original_price'] = data.get('originalPrice')
             status = data.get('status')
@@ -66,10 +68,8 @@ class KoGi(object):
             else:
                 status = True  # True 下架
             item['goods_status'] = status
-            try:
-                print(item)
-            except:
-                pass
+            print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), item)
+
             data_list.append(item)
 
         return data_list
@@ -79,11 +79,18 @@ class KoGi(object):
 
     def save_item(self, content_list):
         brand_name = content_list[0]['brand_name']
-        file_path = './Data/' + str(brand_name) + '.csv'
-        csvFile = open(file_path, "w")  # 创建csv文件
+        import os
+        if os.path.exists('./Data'):
+            print('文件存在')
+            pass
+        else:
+            os.mkdir('./Data')
+
+        file_path = './Data/' + 'brand_list.csv'
+        csvFile = open(file_path, "a+")  # 创建csv文件
         writer = csv.writer(csvFile)  # 创建写的对象
         # 先写入columns_name
-        colos = [ '当前时间', '商品id', '商品名称', '用户id', '用户名称', '商品品牌', '商品价格', '商品原价', '是否下架']
+        colos = ['当前时间', '商品id', '商品名称', '用户id', '用户名称', '商品品牌', '商品价格', '商品原价', '是否下架']
         writer.writerow(colos)  # 写入列的名称
         for content in content_list:
             goods_list = []
@@ -97,7 +104,6 @@ class KoGi(object):
             goods_list.append(content.get('goods_price'))
             goods_list.append(content.get('original_price'))
             goods_list.append(content.get('goods_status'))
-
             # 写入多行用writerows                                #写入多行
             writer.writerow(goods_list)
         csvFile.close()
@@ -106,20 +112,20 @@ class KoGi(object):
     def run(self):
         # 1.获取所有的品牌和url
         data_list = self.ready_url_list()
-        for data in data_list[:2]:  # dict
+        for data in data_list:  # dict
             for brand_name, url_list in data.items():
                 print(brand_name, url_list)
                 content_list = []
                 for url in url_list:
                     r = req.get(url, headers=headers, verify=False)
                     if r is None: continue
-                    data_list = self.parse_html(r)
-                    content_list += data_list
+                    goods_list = self.parse_html(r)
+                    content_list += goods_list
                 # print(content_list)
                 print(len(content_list))
-                self.save_item(content_list)
+                print(content_list)
                 # 开始写入csv文件
-
+                self.save_item(content_list)
 
         # 数据整理完毕
 
@@ -130,14 +136,3 @@ class KoGi(object):
 if __name__ == '__main__':
     kg = KoGi()
     kg.run()
-
-"""
-'goods_id': 75284,
-'user_id': 18084, 
-'user_name': '媛媛张', 
-'goods_name': '蓝色圆领无袖修身连衣裙', 
-'brand_name': '& Other Stories', 
-'goods_price': 129.0, 
-'original_price': 599.0, 
-'goods_status': True
-"""

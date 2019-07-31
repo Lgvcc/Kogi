@@ -91,14 +91,14 @@ def get_total_page(brandId, brand_name_pinyin):
     datas = dict_data.get('data')
     total = datas['count']
     page_size = datas['pageSize']
-    print(total, page_size)
+    # print(total, page_size)
     if total % page_size == 0:
         total_page = total // page_size
     else:
         total_page = total // page_size + 1
     start_url = 'https://api.kogi.club/merchandise/search?page=%s&typeId=&brandId=' + str(
         brandId) + '&order=2&size=&state=&status=-1'
-    print(total_page)
+    # print(total_page)
     url_list = [start_url % str(pageNo) for pageNo in range(1, total_page + 1)]
     return url_list
 

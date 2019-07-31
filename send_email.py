@@ -7,6 +7,7 @@
 # @Software: PyCharm
 # coding:utf-8
 import os
+import shutil
 import zipfile
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -35,7 +36,6 @@ def zipDir(dirpath, outFullName):
 
 def send_email_annex(open_annex_name, email_annex_name, annex_title):
     """ 发送附件 """
-
     zipDir(open_annex_name, email_annex_name)
     # 创建一个带附件的实例
     msg = MIMEMultipart()
@@ -76,6 +76,14 @@ def send_email_annex(open_annex_name, email_annex_name, annex_title):
         # os.unlink(path)
     else:
         print('文件不存在')  # 则返回文件不存在
+
+    if os.path.exists('./Data'):
+        print('文件---------------------')
+        shutil.rmtree('./Data')
+        # os.mkdir('./Data')
+    else:
+        print('文件夹不存在')
+
 
 
 if __name__ == '__main__':
