@@ -10,5 +10,5 @@ query-string==2019.4.13
 redis==3.3.2
 request==2019.4.13
 requests==2.22.0
-urllib3==1.25.3
+urllib3==1.25.8
 xlrd==1.2.0
